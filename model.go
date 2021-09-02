@@ -1,5 +1,18 @@
 package main
 
+type Employee struct {
+	ID          string `json:"id"`
+	Designation string `json:"designation"`
+	Department  string `json:"department"`
+	Role        string `json:"role"`
+	FlagActive  bool   `json:"flagactive"`
+}
+
+type Spot struct {
+	// TODO: implement
+}
+
+// TODO: remove code below
 // Book Struct
 type Book struct {
 	ID     string  `json:"id"`
