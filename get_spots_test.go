@@ -2,14 +2,21 @@ package main
 
 import "github.com/cucumber/godog"
 
-func employeeVisitsBookingsOverview() error {
-	return godog.ErrPending
-}
-
-func showAListOfAllAvailableSpotsForEachDayForUpcomingWeek() error {
+// Given
+func thereIsOneBooking() error {
 	return godog.ErrPending
 }
 
 func userIsVerifiedAsEmployeeOrAdmin() error {
+	return godog.ErrPending
+}
+
+// When
+func employeeVisitsBookingsOverview() error {
+	return godog.ErrPending
+}
+
+// Then
+func showAListOfAllAvailableSpotsForEachDayForUpcomingWeek() error {
 	return godog.ErrPending
 }

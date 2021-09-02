@@ -26,9 +26,10 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	})
 
 	// Get spots
+	ctx.Step(`^there is one booking$`, thereIsOneBooking)
+	ctx.Step(`^User is verified as employee or admin$`, userIsVerifiedAsEmployeeOrAdmin)
 	ctx.Step(`^Employee visits bookings overview$`, employeeVisitsBookingsOverview)
 	ctx.Step(`^Show a list of all available spots for each day for upcoming week$`, showAListOfAllAvailableSpotsForEachDayForUpcomingWeek)
-	ctx.Step(`^User is verified as employee or admin$`, userIsVerifiedAsEmployeeOrAdmin)
 
 	// Set normal spot
 	ctx.Step(`^Add the spot object in the database and success message is shown$`, saveReservationAndShowSuccessMessage)
