@@ -1,13 +1,46 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	"github.com/cucumber/godog"
 )
 
+func InitializeTestSuite(sc *godog.TestSuiteContext) {
+	sc.BeforeSuite(func() {
+		// TODO: create reset/fallback/default spot variables
+	})
+}
+
+// Godog Scenarios
+func InitializeScenario(ctx *godog.ScenarioContext) {
+	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
+		// TODO: clean the state before every scenario
+
+		return ctx, nil
+	})
+
+	// Get spots
+	ctx.Step(`^Employee visits bookings overview$`, employeeVisitsBookingsOverview)
+	ctx.Step(`^Show a list of all available spots for each day for upcoming week$`, showAListOfAllAvailableSpotsForEachDayForUpcomingWeek)
+	ctx.Step(`^User is verified as employee or admin$`, userIsVerifiedAsEmployeeOrAdmin)
+
+	// Set normal spot
+	ctx.Step(`^Add the spot object in the database and success message is shown$`, saveReservationAndShowSuccessMessage)
+	ctx.Step(`^An error message is shown\. "([^"]*)"\.$`, anErrorMessageIsShown)
+	ctx.Step(`^Employee tries to book the spot$`, bookSpot)
+	ctx.Step(`^User input is not validated as employee$`, userIsNotValidatedAsEmployee)
+	ctx.Step(`^User input is validated as an employee or admin and office spots are available$`, spotAvailable)
+	ctx.Step(`^User input is validated as employee and office reservation spots are unavailable$`, spotUnavailable)
+	ctx.Step(`^User tries to book the spot$`, bookSpot)
+}
+
+// =========== TODO: remove/replace code below ==============
 var a App
 
 func TestMain(m *testing.M) {
