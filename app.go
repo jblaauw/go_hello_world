@@ -1,6 +1,6 @@
 package main
 
-import (
+/*import (
 	"encoding/json"
 	"log"
 	"math/rand"
@@ -97,3 +97,4 @@ func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/api/books/{id}", updateBooks).Methods("PUT")
 	a.Router.HandleFunc("/api/books/{id}", deleteBooks).Methods("DELETE")
 }
+*/

@@ -2,18 +2,14 @@ package main
 
 import (
 	"context"
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
-	"os"
-	"testing"
 
 	"github.com/cucumber/godog"
 )
 
 func InitializeTestSuite(sc *godog.TestSuiteContext) {
 	sc.BeforeSuite(func() {
-		// TODO: create reset/fallback/default spot variables
+		normalSpotsAvailable = 0
+		emergencySpotsAvailable = 0
 	})
 }
 
@@ -21,6 +17,8 @@ func InitializeTestSuite(sc *godog.TestSuiteContext) {
 func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		// TODO: clean the state before every scenario
+		normalSpotsAvailable = 0
+		emergencySpotsAvailable = 0
 
 		return ctx, nil
 	})
@@ -42,7 +40,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 }
 
 // =========== TODO: remove/replace code below ==============
-var a App
+/* var a App
 
 func TestMain(m *testing.M) {
 	a.Initialize()
@@ -75,15 +73,5 @@ func TestGetBook(t *testing.T) {
 	}
 }
 
-func executeRequest(req *http.Request) *httptest.ResponseRecorder {
-	rr := httptest.NewRecorder()
-	a.Router.ServeHTTP(rr, req)
 
-	return rr
-}
-
-func checkResponseCode(t *testing.T, expected, actual int) {
-	if expected != actual {
-		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
-	}
-}
+*/
