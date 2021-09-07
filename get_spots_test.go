@@ -1,49 +1,50 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"testing"
-
-	"github.com/cucumber/godog"
+	"time"
 )
 
-// Given
-func thereIsOneBooking(normalSpots int, emergencySpots int) error {
-	// TODO: change this
-	normalSpotsAvailable = normalSpots
-	emergencySpotsAvailable = emergencySpots
-	return nil
-}
+var rrBookings *httptest.ResponseRecorder
 
-func userIsVerifiedAsEmployeeOrAdmin() error {
-	// TODO: implement
-	return nil
-}
+func aRequestIsSentToTheEndpoint(method, endpoint string) error {
+	req, _ := http.NewRequest(method, endpoint, nil)
 
-// When
-func employeeVisitsBookingsOverview(t *testing.T) error {
-	// TODO: change the request to get a range from now till 1 week
-	req, _ := http.NewRequest("GET", "/api/bookings", nil)
-
-	rr := httptest.NewRecorder()
+	rrBookings = httptest.NewRecorder()
 	handler := http.HandlerFunc(getBookings)
-	handler.ServeHTTP(rr, req)
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("Expected response code %v. Got %v\n", http.StatusOK, status)
-	}
-
-	expected := ``
-	if rr.Body.String() != expected {
-		t.Errorf("Expected atleast 1 reserved spot. Got %v", rr.Body.String())
-	}
-	//json.Unmarshal(res.Body.Bytes(), &result)
+	handler.ServeHTTP(rrBookings, req)
 
 	return nil
 }
 
-// Then
-func showAListOfAllAvailableSpotsForEachDayForUpcomingWeek() error {
-	// TODO: compare spots available
-	return godog.ErrPending
+func theHTTPresponseCodeShouldBe(expectedCode int) error {
+	if status := rrBookings.Code; status != expectedCode {
+		return fmt.Errorf("Expected status code %d. Got %d", expectedCode, status)
+	}
+	return nil
+}
+
+func theResponseShouldHaveAListOfObjects(expectedCount int) error {
+	jsonBookings := []map[string]string{}
+	if err := json.Unmarshal(rrBookings.Body.Bytes(), &jsonBookings); err != nil {
+		return fmt.Errorf("Could not convert http response to map. Got: %s", rrBookings.Body.String())
+	}
+
+	if len(jsonBookings) != expectedCount {
+		return fmt.Errorf("Expected the following object count: %d. Got %d", expectedCount, len(jsonBookings))
+	}
+	return nil
+}
+
+func thereIsBooking(bookingAmount int) error {
+	bookings = append(bookings, Spot{ID: "1", BookedDate: time.Date(2021, 9, 4, 0, 0, 0, 0, time.Now().Location()), BookingStatus: "NB", BookedOn: time.Now(), BookedBy: "123123"})
+	return nil
+}
+
+func userIsVerifiedAs(expectedRole string) error {
+	// TODO: implement token verification
+	return nil
 }

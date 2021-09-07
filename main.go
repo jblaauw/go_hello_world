@@ -11,9 +11,6 @@ import (
 
 var bookings []Spot
 
-var normalSpotsAvailable int
-var emergencySpotsAvailable int
-
 func main() {
 	r := mux.NewRouter()
 

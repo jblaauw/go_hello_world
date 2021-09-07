@@ -8,35 +8,32 @@ import (
 
 func InitializeTestSuite(sc *godog.TestSuiteContext) {
 	sc.BeforeSuite(func() {
-		normalSpotsAvailable = 0
-		emergencySpotsAvailable = 0
+		bookings = []Spot{}
 	})
 }
 
 // Godog Scenarios
-func InitializeScenario(ctx *godog.ScenarioContext) {
-	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
-		// TODO: clean the state before every scenario
-		normalSpotsAvailable = 0
-		emergencySpotsAvailable = 0
-
+func InitializeScenario(sc *godog.ScenarioContext) {
+	sc.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
+		bookings = []Spot{}
 		return ctx, nil
 	})
 
 	// Get spots
-	ctx.Step(`^there is one booking$`, thereIsOneBooking)
-	ctx.Step(`^User is verified as employee or admin$`, userIsVerifiedAsEmployeeOrAdmin)
-	ctx.Step(`^Employee visits bookings overview$`, employeeVisitsBookingsOverview)
-	ctx.Step(`^Show a list of all available spots for each day for upcoming week$`, showAListOfAllAvailableSpotsForEachDayForUpcomingWeek)
+	sc.Step(`^there is (\d+) booking$`, thereIsBooking)
+	sc.Step(`^user is verified as "([^"]*)"$`, userIsVerifiedAs)
+	sc.Step(`^a "([^"]*)" request is sent to the endpoint "([^"]*)"$`, aRequestIsSentToTheEndpoint)
+	sc.Step(`^the HTTP-response code should be "(\d+)"$`, theHTTPresponseCodeShouldBe)
+	sc.Step(`^the response should have a list of (\d+) objects$`, theResponseShouldHaveAListOfObjects)
 
 	// Set normal spot
-	ctx.Step(`^Add the spot object in the database and success message is shown$`, saveReservationAndShowSuccessMessage)
+	/* ctx.Step(`^Add the spot object in the database and success message is shown$`, saveReservationAndShowSuccessMessage)
 	ctx.Step(`^An error message is shown\. "([^"]*)"\.$`, anErrorMessageIsShown)
 	ctx.Step(`^Employee tries to book the spot$`, bookSpot)
 	ctx.Step(`^User input is not validated as employee$`, userIsNotValidatedAsEmployee)
 	ctx.Step(`^User input is validated as an employee or admin and office spots are available$`, spotAvailable)
 	ctx.Step(`^User input is validated as employee and office reservation spots are unavailable$`, spotUnavailable)
-	ctx.Step(`^User tries to book the spot$`, bookSpot)
+	ctx.Step(`^User tries to book the spot$`, bookSpot) */
 }
 
 // =========== TODO: remove/replace code below ==============

@@ -4,7 +4,8 @@ Feature: Get spots
     I need to see which spots are available and those that are unavailable
 
     Scenario: Get all booking information from now until one week from now and there is atleast 1 booking
-        Given User is verified as employee or admin
-        And there is one booking
-        When Employee visits bookings overview
-        Then Show a list of all available spots for each day for upcoming week
+        Given user is verified as "employee"
+        And there is 1 booking
+        When a "GET" request is sent to the endpoint "/api/bookings"
+        Then the HTTP-response code should be "200"
+        And the response should have a list of 1 objects
