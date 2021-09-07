@@ -20,9 +20,21 @@ func aRequestIsSentToTheEndpoint(method, endpoint string) error {
 	return nil
 }
 
-func theHTTPresponseCodeShouldBe(expectedCode int) error {
-	if status := rrBookings.Code; status != expectedCode {
-		return fmt.Errorf("Expected status code %d. Got %d", expectedCode, status)
+func theHTTPresponseCodeShouldBe(expectedMsg string) error {
+	var statusMsg string
+	switch rrBookings.Code {
+	case 200:
+		statusMsg = "success"
+	case 201:
+		statusMsg = "created"
+	case 401:
+		statusMsg = "unauthorized"
+	default:
+		statusMsg = "failed"
+	}
+
+	if statusMsg != expectedMsg {
+		return fmt.Errorf("Expected status code %s. Got %s", expectedMsg, statusMsg)
 	}
 	return nil
 }

@@ -7,6 +7,7 @@ import (
 )
 
 func InitializeTestSuite(sc *godog.TestSuiteContext) {
+	// Runs before entire test Suite
 	sc.BeforeSuite(func() {
 		bookings = []Spot{}
 	})
@@ -14,6 +15,7 @@ func InitializeTestSuite(sc *godog.TestSuiteContext) {
 
 // Godog Scenarios
 func InitializeScenario(sc *godog.ScenarioContext) {
+	// Runs before every scenario
 	sc.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		bookings = []Spot{}
 		return ctx, nil
@@ -23,17 +25,15 @@ func InitializeScenario(sc *godog.ScenarioContext) {
 	sc.Step(`^there is (\d+) booking$`, thereIsBooking)
 	sc.Step(`^user is verified as "([^"]*)"$`, userIsVerifiedAs)
 	sc.Step(`^a "([^"]*)" request is sent to the endpoint "([^"]*)"$`, aRequestIsSentToTheEndpoint)
-	sc.Step(`^the HTTP-response code should be "(\d+)"$`, theHTTPresponseCodeShouldBe)
+	sc.Step(`^the HTTP-response code should be "([^"]*)"$`, theHTTPresponseCodeShouldBe)
 	sc.Step(`^the response should have a list of (\d+) objects$`, theResponseShouldHaveAListOfObjects)
 
 	// Set normal spot
-	/* ctx.Step(`^Add the spot object in the database and success message is shown$`, saveReservationAndShowSuccessMessage)
-	ctx.Step(`^An error message is shown\. "([^"]*)"\.$`, anErrorMessageIsShown)
-	ctx.Step(`^Employee tries to book the spot$`, bookSpot)
-	ctx.Step(`^User input is not validated as employee$`, userIsNotValidatedAsEmployee)
-	ctx.Step(`^User input is validated as an employee or admin and office spots are available$`, spotAvailable)
-	ctx.Step(`^User input is validated as employee and office reservation spots are unavailable$`, spotUnavailable)
-	ctx.Step(`^User tries to book the spot$`, bookSpot) */
+	sc.Step(`^a "([^"]*)" office spot is "([^"]*)"$`, aOfficeSpotIs)
+	sc.Step(`^An error message is shown\. "([^"]*)"$`, anErrorMessageIsShown)
+	sc.Step(`^"([^"]*)" books a "([^"]*)" spot$`, booksASpot)
+	sc.Step(`^save the booking$`, saveTheBooking)
+
 }
 
 // =========== TODO: remove/replace code below ==============
