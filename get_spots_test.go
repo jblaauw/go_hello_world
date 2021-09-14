@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
 var rrBookings *httptest.ResponseRecorder
@@ -14,8 +16,11 @@ func aRequestIsSentToTheEndpoint(method, endpoint string) error {
 	req, _ := http.NewRequest(method, endpoint, nil)
 
 	rrBookings = httptest.NewRecorder()
-	handler := http.HandlerFunc(getBookings)
-	handler.ServeHTTP(rrBookings, req)
+	router := mux.NewRouter()
+
+	router.HandleFunc("/api/bookings", getBookings).Methods("GET")
+	// router.HandleFunc("/api/bookings/{id}", getBooking).Methods("GET")
+	router.ServeHTTP(rrBookings, req)
 
 	return nil
 }
@@ -29,6 +34,8 @@ func theHTTPresponseCodeShouldBe(expectedMsg string) error {
 		statusMsg = "created"
 	case 401:
 		statusMsg = "unauthorized"
+	case 503:
+		statusMsg = "service unavailable"
 	default:
 		statusMsg = "failed"
 	}

@@ -30,9 +30,9 @@ func InitializeScenario(sc *godog.ScenarioContext) {
 
 	// Set normal spot
 	sc.Step(`^a "([^"]*)" office spot is "([^"]*)"$`, aOfficeSpotIs)
-	sc.Step(`^An error message is shown\. "([^"]*)"$`, anErrorMessageIsShown)
 	sc.Step(`^"([^"]*)" books a "([^"]*)" spot$`, booksASpot)
 	sc.Step(`^save the booking$`, saveTheBooking)
+	sc.Step(`^An "([^"]*)" message is shown\. "([^"]*)"$`, anMessageIsShown)
 
 }
 

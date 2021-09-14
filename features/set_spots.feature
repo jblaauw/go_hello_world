@@ -16,30 +16,10 @@ Feature: Book a normal spot as an employee
         And a "normal" office spot is "unavailable"
         When "employee" books a "normal" spot
         Then An "error" message is shown. "No space is available. Please try other booking spots or contact the admin"
-        And the HTTP-response code should be ""
+        And the HTTP-response code should be "service unavailable"
 
     Scenario: Reserve a spot when the user is not verified as employee
+        Given a "normal" office spot is "available"
         When "unverified employee" books a "normal" spot
-        And a "normal" office spot is "available"
         Then An "error" message is shown. "You are not authorized to book a spot."
         And the HTTP-response code should be "unauthorized"
-
-Feature: Book a normal spot for an employee as an admin
-    In order to 
-    As 
-    I need to be able to 
-
-    Scenario: 
-        Given 
-        When 
-        Then 
-
-Feature: Book an emergency spot for an employee as an admin
-    In order to 
-    As 
-    I need to be able to 
-
-    Scenario: 
-        Given 
-        When 
-        Then 
