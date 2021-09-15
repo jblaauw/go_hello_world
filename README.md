@@ -16,19 +16,19 @@ git clone git@github.com:jblaauw/go_hello_world.git
 ```
 go install
 ```
-4. Run the project
+4a. Run the project
 ```
 go run .
 ```
 OR
-4. Build the project and run it
+4b. Build the project and run it
 ```
 go build && .\restapi.exe
 ```
 
 ## Testing
-For the use cases, look into /features.
-For running the tests run Godog
+- For the use cases, look into /features.
+- For running the tests run Godog
 ```
 godog
 ```
