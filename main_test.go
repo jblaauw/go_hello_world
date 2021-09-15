@@ -18,6 +18,9 @@ func InitializeScenario(sc *godog.ScenarioContext) {
 	// Runs before every scenario
 	sc.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		bookings = []Spot{}
+		spotAvailable = false
+
+		requestBody = nil
 		return ctx, nil
 	})
 
@@ -31,8 +34,9 @@ func InitializeScenario(sc *godog.ScenarioContext) {
 	// Set normal spot
 	sc.Step(`^a "([^"]*)" office spot is "([^"]*)"$`, aOfficeSpotIs)
 	sc.Step(`^"([^"]*)" books a "([^"]*)" spot$`, booksASpot)
-	sc.Step(`^save the booking$`, saveTheBooking)
-	sc.Step(`^An "([^"]*)" message is shown\. "([^"]*)"$`, anMessageIsShown)
+	sc.Step(`^an "([^"]*)" message is shown\. "([^"]*)"$`, anMessageIsShown)
+	sc.Step(`^the request body contains a new booking$`, theRequestBodyContainsANewBooking)
+	sc.Step(`^the request header content type is set to "([^"]*)"$`, theRequestHeaderContentTypeIsSetTo)
 
 }
 

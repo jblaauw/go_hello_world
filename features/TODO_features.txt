@@ -12,6 +12,20 @@ Feature: Get spot
 
 // Set Spots
 
+Scenario: Reserve a spot when the normal spots are unavailable
+        Given user is verified as "employee"
+        And a "normal" office spot is "unavailable"
+        When "employee" books a "normal" spot
+        Then an "error" message is shown. "No space is available. Please try other booking spots or contact the admin"
+        And the HTTP-response code should be "service unavailable"
+
+    Scenario: Reserve a spot when the user is not verified as employee
+        Given a "normal" office spot is "available"
+        When "unverified employee" books a "normal" spot
+        Then an "error" message is shown. "You are not authorized to book a spot."
+        And the HTTP-response code should be "unauthorized"
+
+
 
 Feature: Book a normal spot for an employee as an admin
     In order to let an employee work in the office

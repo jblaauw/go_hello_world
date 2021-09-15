@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -11,9 +12,16 @@ import (
 )
 
 var rrBookings *httptest.ResponseRecorder
+var requestBody *bytes.Buffer
 
 func aRequestIsSentToTheEndpoint(method, endpoint string) error {
-	req, _ := http.NewRequest(method, endpoint, nil)
+	var req *http.Request
+	var _ error
+	if requestBody == nil {
+		req, _ = http.NewRequest(method, endpoint, nil)
+	} else {
+		req, _ = http.NewRequest(method, endpoint, requestBody)
+	}
 
 	rrBookings = httptest.NewRecorder()
 	router := mux.NewRouter()
