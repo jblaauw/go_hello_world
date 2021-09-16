@@ -5,15 +5,20 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"strconv"
 	"time"
 )
 
-var spotAvailable bool
 var requestBody *bytes.Buffer
 
 func aOfficeSpotIs(spotType, availability string) error {
 	// TODO: change implementation if there is a real way to check if there is a spot available
-	spotAvailable = availability == "available"
+
+	if availability == "unavailable" {
+		for i := 0; i < 15; i++ {
+			bookings = append(bookings, Spot{ID: strconv.Itoa(i + 1), BookedDate: time.Date(2021, 9, 4, 0, 0, 0, 0, time.Now().Location()), BookingStatus: "NB", BookedOn: time.Now(), BookedBy: "123123"})
+		}
+	}
 	return nil
 }
 

@@ -18,7 +18,6 @@ func InitializeScenario(sc *godog.ScenarioContext) {
 	// Runs before every scenario
 	sc.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		bookings = []Spot{}
-		spotAvailable = false
 
 		requestBody = nil
 		return ctx, nil
