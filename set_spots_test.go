@@ -9,11 +9,16 @@ import (
 )
 
 var spotAvailable bool
+var requestBody *bytes.Buffer
 
 func aOfficeSpotIs(spotType, availability string) error {
 	// TODO: change implementation if there is a real way to check if there is a spot available
 	spotAvailable = availability == "available"
 	return nil
+}
+
+func theRequestHeaderContentTypeIsSetTo(arg1 string) error {
+	return godog.ErrPending
 }
 
 func theRequestBodyContainsANewBooking() error {
@@ -30,14 +35,6 @@ func theRequestBodyContainsANewBooking() error {
 	return nil
 }
 
-func booksASpot(user, spotType string) error {
-	return godog.ErrPending
-}
-
-func anMessageIsShown(msgType, msg string) error {
-	return godog.ErrPending
-}
-
-func theRequestHeaderContentTypeIsSetTo(arg1 string) error {
+func responseBodyShouldContainAsIts(arg1, arg2 string) error {
 	return godog.ErrPending
 }

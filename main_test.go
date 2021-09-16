@@ -25,18 +25,18 @@ func InitializeScenario(sc *godog.ScenarioContext) {
 	})
 
 	// Get spots
+	sc.Step(`^a "([^"]*)" request is created for the endpoint "([^"]*)"$`, aRequestIsCreatedForTheEndpoint)
+	sc.Step(`^the user is verified as "([^"]*)"$`, theUserIsVerifiedAs)
 	sc.Step(`^there is (\d+) booking$`, thereIsBooking)
-	sc.Step(`^user is verified as "([^"]*)"$`, userIsVerifiedAs)
-	sc.Step(`^a "([^"]*)" request is sent to the endpoint "([^"]*)"$`, aRequestIsSentToTheEndpoint)
+	sc.Step(`^the request is sent to the endpoint$`, theRequestIsSentToTheEndpoint)
 	sc.Step(`^the HTTP-response code should be "([^"]*)"$`, theHTTPresponseCodeShouldBe)
 	sc.Step(`^the response should have a list of (\d+) objects$`, theResponseShouldHaveAListOfObjects)
 
 	// Set normal spot
 	sc.Step(`^a "([^"]*)" office spot is "([^"]*)"$`, aOfficeSpotIs)
-	sc.Step(`^"([^"]*)" books a "([^"]*)" spot$`, booksASpot)
-	sc.Step(`^an "([^"]*)" message is shown\. "([^"]*)"$`, anMessageIsShown)
-	sc.Step(`^the request body contains a new booking$`, theRequestBodyContainsANewBooking)
 	sc.Step(`^the request header content type is set to "([^"]*)"$`, theRequestHeaderContentTypeIsSetTo)
+	sc.Step(`^the request body contains a new booking$`, theRequestBodyContainsANewBooking)
+	sc.Step(`^response body should contain "([^"]*)" as it\'s "([^"]*)"$`, responseBodyShouldContainAsIts)
 
 }
 

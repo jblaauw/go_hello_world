@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -12,10 +11,9 @@ import (
 )
 
 var rrBookings *httptest.ResponseRecorder
-var requestBody *bytes.Buffer
+var req *http.Request
 
-func aRequestIsSentToTheEndpoint(method, endpoint string) error {
-	var req *http.Request
+func aRequestIsCreatedForTheEndpoint(method, endpoint string) error {
 	var _ error
 	if requestBody == nil {
 		req, _ = http.NewRequest(method, endpoint, nil)
@@ -23,6 +21,20 @@ func aRequestIsSentToTheEndpoint(method, endpoint string) error {
 		req, _ = http.NewRequest(method, endpoint, requestBody)
 	}
 
+	return nil
+}
+
+func theUserIsVerifiedAs(expectedRole string) error {
+	// TODO: implement token verification
+	return nil
+}
+
+func thereIsBooking(bookingAmount int) error {
+	bookings = append(bookings, Spot{ID: "1", BookedDate: time.Date(2021, 9, 4, 0, 0, 0, 0, time.Now().Location()), BookingStatus: "NB", BookedOn: time.Now(), BookedBy: "123123"})
+	return nil
+}
+
+func theRequestIsSentToTheEndpoint() error {
 	rrBookings = httptest.NewRecorder()
 	router := mux.NewRouter()
 
@@ -63,15 +75,5 @@ func theResponseShouldHaveAListOfObjects(expectedCount int) error {
 	if len(jsonBookings) != expectedCount {
 		return fmt.Errorf("Expected the following object count: %d. Got %d", expectedCount, len(jsonBookings))
 	}
-	return nil
-}
-
-func thereIsBooking(bookingAmount int) error {
-	bookings = append(bookings, Spot{ID: "1", BookedDate: time.Date(2021, 9, 4, 0, 0, 0, 0, time.Now().Location()), BookingStatus: "NB", BookedOn: time.Now(), BookedBy: "123123"})
-	return nil
-}
-
-func userIsVerifiedAs(expectedRole string) error {
-	// TODO: implement token verification
 	return nil
 }
