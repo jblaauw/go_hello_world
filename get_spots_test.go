@@ -40,6 +40,7 @@ func theRequestIsSentToTheEndpoint() error {
 
 	router.HandleFunc("/api/bookings", getBookings).Methods("GET")
 	// router.HandleFunc("/api/bookings/{id}", getBooking).Methods("GET")
+	router.HandleFunc("/api/bookings", createBooking).Methods("POST")
 	router.ServeHTTP(rrBookings, req)
 
 	return nil

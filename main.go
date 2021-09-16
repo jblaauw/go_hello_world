@@ -19,12 +19,36 @@ func main() {
 
 	// Routes
 	r.HandleFunc("/api/bookings", getBookings).Methods("GET")
+	r.HandleFunc("/api/bookings", createBooking).Methods("POST")
 
 	// Listen for incoming requests + error logging
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
 
 func getBookings(w http.ResponseWriter, r *http.Request) {
+	respondWithJSON(w, http.StatusOK, bookings)
+}
+
+func createBooking(w http.ResponseWriter, r *http.Request) {
+	var newSpot Spot
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&newSpot); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+	}
+	defer r.Body.Close()
+
+	bookings = append(bookings, newSpot)
+	respondWithJSON(w, http.StatusCreated, newSpot)
+}
+
+func respondWithError(w http.ResponseWriter, code int, message string) {
+	respondWithJSON(w, code, map[string]string{"error": message})
+}
+
+func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+	response, _ := json.Marshal(payload)
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(bookings)
+	w.WriteHeader(code)
+	w.Write(response)
 }

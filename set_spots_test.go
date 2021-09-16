@@ -3,9 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"reflect"
 	"time"
-
-	"github.com/cucumber/godog"
 )
 
 var spotAvailable bool
@@ -17,8 +17,9 @@ func aOfficeSpotIs(spotType, availability string) error {
 	return nil
 }
 
-func theRequestHeaderContentTypeIsSetTo(arg1 string) error {
-	return godog.ErrPending
+func theRequestHeaderIsSetTo(key, value string) error {
+	req.Header.Set(key, value)
+	return nil
 }
 
 func theRequestBodyContainsANewBooking() error {
@@ -35,6 +36,22 @@ func theRequestBodyContainsANewBooking() error {
 	return nil
 }
 
-func responseBodyShouldContainAsIts(arg1, arg2 string) error {
-	return godog.ErrPending
+func responseBodyShouldContainAsIts(attrExpectedValue, attrName string) error {
+	var resBooking Spot
+	err := json.Unmarshal(rrBookings.Body.Bytes(), &resBooking)
+	if err != nil {
+		return fmt.Errorf("Error while deserializing response body: %s", err.Error())
+	}
+
+	if attrValue := resBooking.getFieldString(attrName); attrValue != attrExpectedValue {
+		return fmt.Errorf("Expected the following value: %s. Got %s", attrExpectedValue, attrValue)
+	}
+
+	return nil
+}
+
+func (spot *Spot) getFieldString(field string) string {
+	r := reflect.ValueOf(spot)
+	f := reflect.Indirect(r).FieldByName(field)
+	return string(f.String())
 }

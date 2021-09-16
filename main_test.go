@@ -34,7 +34,7 @@ func InitializeScenario(sc *godog.ScenarioContext) {
 
 	// Set normal spot
 	sc.Step(`^a "([^"]*)" office spot is "([^"]*)"$`, aOfficeSpotIs)
-	sc.Step(`^the request header content type is set to "([^"]*)"$`, theRequestHeaderContentTypeIsSetTo)
+	sc.Step(`^the request header "([^"]*)" is set to "([^"]*)"$`, theRequestHeaderIsSetTo)
 	sc.Step(`^the request body contains a new booking$`, theRequestBodyContainsANewBooking)
 	sc.Step(`^response body should contain "([^"]*)" as it\'s "([^"]*)"$`, responseBodyShouldContainAsIts)
 
