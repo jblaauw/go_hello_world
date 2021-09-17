@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"reflect"
 	"strconv"
 	"time"
@@ -42,16 +43,28 @@ func theRequestBodyContainsANewBooking() error {
 }
 
 func responseBodyShouldContainAsIts(attrExpectedValue, attrName string) error {
-	var resBooking Spot
-	err := json.Unmarshal(rrBookings.Body.Bytes(), &resBooking)
-	if err != nil {
-		return fmt.Errorf("Error while deserializing response body: %s", err.Error())
-	}
+	var err error
+	if rrBookings.Code == http.StatusCreated {
+		var resBooking Spot
+		err = json.Unmarshal(rrBookings.Body.Bytes(), &resBooking)
+		if err != nil {
+			return fmt.Errorf("Error while deserializing response body: %s", err.Error())
+		}
+		if attrValue := resBooking.getFieldString(attrName); attrValue != attrExpectedValue {
+			return fmt.Errorf("Expected the following value: %s. Got %s", attrExpectedValue, attrValue)
+		}
 
-	if attrValue := resBooking.getFieldString(attrName); attrValue != attrExpectedValue {
-		return fmt.Errorf("Expected the following value: %s. Got %s", attrExpectedValue, attrValue)
+	} else {
+		var resError ResponseError
+		err = json.Unmarshal(rrBookings.Body.Bytes(), &resError)
+		if err != nil {
+			return fmt.Errorf("Error while deserializing response body: %s", err.Error())
+		}
+		if resError.Error != attrExpectedValue {
+			fmt.Printf("ding: %v", resError)
+			return fmt.Errorf("Expected the following value: %s. Got %s", attrExpectedValue, resError.Error)
+		}
 	}
-
 	return nil
 }
 

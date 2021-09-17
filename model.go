@@ -17,3 +17,7 @@ type Spot struct {
 	BookedOn      time.Time `json:"booked_on"`
 	BookedBy      string    `json:"booked_by"`
 }
+
+type ResponseError struct {
+	Error string `json:"error"`
+}

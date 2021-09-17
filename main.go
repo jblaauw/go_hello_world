@@ -33,12 +33,14 @@ func createBooking(w http.ResponseWriter, r *http.Request) {
 	const MAX_BOOKINGS = 15
 	if len(bookings) >= MAX_BOOKINGS {
 		respondWithError(w, http.StatusServiceUnavailable, "There are no spots available.")
+		return
 	}
 
 	var newSpot Spot
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&newSpot); err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
 	}
 	defer r.Body.Close()
 
