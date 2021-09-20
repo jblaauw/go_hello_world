@@ -44,7 +44,7 @@ func theRequestBodyContainsANewBooking() error {
 
 func responseBodyShouldContainAsIts(attrExpectedValue, attrName string) error {
 	var err error
-	if rrBookings.Code == http.StatusCreated {
+	if rrBookings.Code == http.StatusCreated || rrBookings.Code == http.StatusOK {
 		var resBooking Spot
 		err = json.Unmarshal(rrBookings.Body.Bytes(), &resBooking)
 		if err != nil {
@@ -61,7 +61,6 @@ func responseBodyShouldContainAsIts(attrExpectedValue, attrName string) error {
 			return fmt.Errorf("Error while deserializing response body: %s", err.Error())
 		}
 		if resError.Error != attrExpectedValue {
-			fmt.Printf("ding: %v", resError)
 			return fmt.Errorf("Expected the following value: %s. Got %s", attrExpectedValue, resError.Error)
 		}
 	}

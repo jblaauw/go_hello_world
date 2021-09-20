@@ -47,13 +47,15 @@ func theRequestIsSentToTheEndpoint() error {
 func theHTTPresponseCodeShouldBe(expectedMsg string) error {
 	var statusMsg string
 	switch rrBookings.Code {
-	case 200:
+	case http.StatusOK:
 		statusMsg = "success"
-	case 201:
+	case http.StatusCreated:
 		statusMsg = "created"
-	case 401:
+	case http.StatusUnauthorized:
 		statusMsg = "unauthorized"
-	case 503:
+	case http.StatusNotFound:
+		statusMsg = "not found"
+	case http.StatusServiceUnavailable:
 		statusMsg = "service unavailable"
 	default:
 		statusMsg = "failed"

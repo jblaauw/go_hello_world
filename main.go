@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -28,11 +27,30 @@ func initializeRoutes(r *mux.Router) {
 
 	// Me / Employee routes
 	r.HandleFunc("/api/me/bookings", getBookings).Methods("GET")
+	r.HandleFunc("/api/me/bookings/{id}", getBooking).Methods("GET")
 	r.HandleFunc("/api/me/bookings", createBooking).Methods("POST")
 }
 
 func getBookings(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, bookings)
+}
+
+func getBooking(w http.ResponseWriter, r *http.Request) {
+	if !isAuthorized(*r) {
+		respondWithError(w, http.StatusUnauthorized, "You are not authorized to book a spot.")
+		return
+	}
+
+	// Extract the id from the url
+	vars := mux.Vars(r)
+	id, ok := vars["id"]
+
+	i := findBooking(bookings, id)
+	if !ok || i == -1 {
+		respondWithError(w, http.StatusNotFound, "The booking was not found.")
+		return
+	}
+	respondWithJSON(w, http.StatusOK, bookings[i])
 }
 
 func createBooking(w http.ResponseWriter, r *http.Request) {
@@ -57,24 +75,4 @@ func createBooking(w http.ResponseWriter, r *http.Request) {
 
 	bookings = append(bookings, newSpot)
 	respondWithJSON(w, http.StatusCreated, newSpot)
-}
-
-func respondWithError(w http.ResponseWriter, code int, message string) {
-	respondWithJSON(w, code, map[string]string{"error": message})
-}
-
-func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
-	response, _ := json.Marshal(payload)
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(code)
-	w.Write(response)
-}
-
-func isAuthorized(r http.Request) bool {
-	reqToken := r.Header.Get("Authorization")
-	splitToken := strings.Split(reqToken, "Bearer ")
-	return len(splitToken) == 2
-	// TODO: implement OAuth
-	// can get the token like: reqToken = splitToken[1]
 }
