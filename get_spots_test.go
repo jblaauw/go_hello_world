@@ -38,11 +38,7 @@ func thereIsBooking(bookingAmount int) error {
 func theRequestIsSentToTheEndpoint() error {
 	rrBookings = httptest.NewRecorder()
 	r := mux.NewRouter()
-
-	// TODO: instead of rebuilding the routes, use the existing ones in main.go
-	r.HandleFunc("/api/bookings", createBooking).Methods("POST")
-	r.HandleFunc("/api/me/bookings", getBookings).Methods("GET")
-	r.HandleFunc("/api/me/bookings", createBooking).Methods("POST")
+	initializeRoutes(r)
 	r.ServeHTTP(rrBookings, req)
 
 	return nil

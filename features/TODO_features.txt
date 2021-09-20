@@ -1,15 +1,3 @@
-Feature: Get spot
-    In order to book a spot
-    As an employee
-    I need to see which spots are available and those that are unavailable
-
-    Scenario: Get 1 specific booking information
-        Given user is verified as "employee"
-        And there is 1 booking
-        When a "GET" request is sent to the endpoint "/api/bookings/1"
-        Then the HTTP-response code should be "success"
-        And the response object "BookingStatus" should be "NB"
-
 // Set Spots 
 
 Feature: Book an emergency spot for an employee as an admin
