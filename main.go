@@ -19,8 +19,9 @@ func main() {
 	bookings = append(bookings, Spot{ID: "1", BookedDate: time.Date(2021, 9, 4, 0, 0, 0, 0, time.Now().Location()), BookingStatus: "NB", BookedOn: time.Now(), BookedBy: "123123"})
 
 	// Routes
-	r.HandleFunc("/api/bookings", getBookings).Methods("GET")
 	r.HandleFunc("/api/bookings", createBooking).Methods("POST")
+	r.HandleFunc("/api/me/bookings", getBookings).Methods("GET")
+	r.HandleFunc("/api/me/bookings", createBooking).Methods("POST")
 
 	// Listen for incoming requests + error logging
 	log.Fatal(http.ListenAndServe(":8000", r))
