@@ -17,9 +17,14 @@ func InitializeTestSuite(sc *godog.TestSuiteContext) {
 func InitializeScenario(sc *godog.ScenarioContext) {
 	// Runs before every scenario
 	sc.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
+		// Variable from main application
 		bookings = []Spot{}
-		rrBookings = nil
 
+		// Variables from get_spots_test
+		rrBookings = nil
+		req = nil
+
+		// Variables from set_spots_test
 		requestBody = nil
 		return ctx, nil
 	})

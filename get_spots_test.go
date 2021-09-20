@@ -26,6 +26,7 @@ func aRequestIsCreatedForTheEndpoint(method, endpoint string) error {
 
 func theUserIsVerifiedAs(expectedRole string) error {
 	// TODO: implement token verification
+	req.Header.Set("Authorization", "Bearer RsT5OjbzRn430zqMLgV3Ia")
 	return nil
 }
 

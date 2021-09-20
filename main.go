@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -30,6 +31,11 @@ func getBookings(w http.ResponseWriter, r *http.Request) {
 }
 
 func createBooking(w http.ResponseWriter, r *http.Request) {
+	if !isAuthorized(*r) {
+		respondWithError(w, http.StatusUnauthorized, "You are not authorized to book a spot.")
+		return
+	}
+
 	const MAX_BOOKINGS = 15
 	if len(bookings) >= MAX_BOOKINGS {
 		respondWithError(w, http.StatusServiceUnavailable, "There are no spots available.")
@@ -58,4 +64,12 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	w.Write(response)
+}
+
+func isAuthorized(r http.Request) bool {
+	reqToken := r.Header.Get("Authorization")
+	splitToken := strings.Split(reqToken, "Bearer ")
+	return len(splitToken) == 2
+	// TODO: implement OAuth
+	// can get the token like: reqToken = splitToken[1]
 }

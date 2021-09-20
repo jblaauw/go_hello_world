@@ -22,3 +22,12 @@ Feature: Book a normal spot as an employee
         When the request is sent to the endpoint 
         Then the HTTP-response code should be "service unavailable"
         And response body should contain "There are no spots available." as it's "error"
+
+    Scenario: Reserve a spot when the user is not verified as employee
+        Given a "normal" office spot is "available"
+        And the request body contains a new booking
+        And a "POST" request is created for the endpoint "/api/bookings"
+        And the request header "Content-Type" is set to "application/json"
+        When the request is sent to the endpoint 
+        Then the HTTP-response code should be "unauthorized"
+        And response body should contain "You are not authorized to book a spot." as it's "error"
