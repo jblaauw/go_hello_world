@@ -1,55 +1,45 @@
 package main
 
 import (
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
-	"os"
-	"testing"
+	"context"
+
+	"github.com/cucumber/godog"
 )
 
-var a App
-
-func TestMain(m *testing.M) {
-	a.Initialize()
-	code := m.Run()
-	os.Exit(code)
+func InitializeTestSuite(sc *godog.TestSuiteContext) {
+	// Runs before entire test Suite
+	sc.BeforeSuite(func() {
+		bookings = []Spot{}
+	})
 }
 
-func TestGetBook(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/api/books/1", nil)
-	res := executeRequest(req)
-	checkResponseCode(t, http.StatusOK, res.Code)
+// Godog Scenarios
+func InitializeScenario(sc *godog.ScenarioContext) {
+	// Runs before every scenario
+	sc.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
+		// Variable from main application
+		bookings = []Spot{}
 
-	var result Book
-	json.Unmarshal(res.Body.Bytes(), &result)
+		// Variables from get_spots_test
+		rrBookings = nil
+		req = nil
 
-	if result.ID != "1" {
-		t.Errorf("Expected an two books in an array. Got %v", result.ID)
-	}
-	if result.Isbn != "58899" {
-		t.Errorf("Expected an two books in an array. Got %v", result.Isbn)
-	}
-	if result.Title != "Book One" {
-		t.Errorf("Expected an two books in an array. Got %v", result.Title)
-	}
-	if result.Author.Firstname != "Frank" {
-		t.Errorf("Expected an two books in an array. Got %v", result.Author.Firstname)
-	}
-	if result.Author.Lastname != "Dorito" {
-		t.Errorf("Expected an two books in an array. Got %v", result.Author.Lastname)
-	}
-}
+		// Variables from set_spots_test
+		requestBody = nil
+		return ctx, nil
+	})
 
-func executeRequest(req *http.Request) *httptest.ResponseRecorder {
-	rr := httptest.NewRecorder()
-	a.Router.ServeHTTP(rr, req)
+	// Get spots
+	sc.Step(`^a "([^"]*)" request is created for the endpoint "([^"]*)"$`, aRequestIsCreatedForTheEndpoint)
+	sc.Step(`^the user is verified as "([^"]*)"$`, theUserIsVerifiedAs)
+	sc.Step(`^there is (\d+) booking$`, thereIsBooking)
+	sc.Step(`^the request is sent to the endpoint$`, theRequestIsSentToTheEndpoint)
+	sc.Step(`^the HTTP-response code should be "([^"]*)"$`, theHTTPresponseCodeShouldBe)
+	sc.Step(`^the response should have a list of (\d+) objects$`, theResponseShouldHaveAListOfObjects)
 
-	return rr
-}
-
-func checkResponseCode(t *testing.T, expected, actual int) {
-	if expected != actual {
-		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
-	}
+	// Set normal spot
+	sc.Step(`^a "([^"]*)" office spot is "([^"]*)"$`, aOfficeSpotIs)
+	sc.Step(`^the request header "([^"]*)" is set to "([^"]*)"$`, theRequestHeaderIsSetTo)
+	sc.Step(`^the request body contains a new "([^"]*)" booking$`, theRequestBodyContainsANewBooking)
+	sc.Step(`^response body should contain "([^"]*)" as it\'s "([^"]*)"$`, responseBodyShouldContainAsIts)
 }

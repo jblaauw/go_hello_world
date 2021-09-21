@@ -1,15 +1,23 @@
 package main
 
-// Book Struct
-type Book struct {
-	ID     string  `json:"id"`
-	Isbn   string  `json:"isbn"`
-	Title  string  `json:"title"`
-	Author *Author `json:"author"`
+import "time"
+
+type Employee struct {
+	ID          string `json:"id"`
+	Designation string `json:"designation"`
+	Department  string `json:"department"`
+	Role        string `json:"role"`
+	FlagActive  bool   `json:"flag_active"`
 }
 
-// Author Struct
-type Author struct {
-	Firstname string `json:"firstname"`
-	Lastname  string `json:"lastname"`
+type Spot struct {
+	ID            string    `json:"id"`
+	BookedDate    time.Time `json:"booked_date"`
+	BookingStatus string    `json:"booking_status"`
+	BookedOn      time.Time `json:"booked_on"`
+	BookedBy      string    `json:"booked_by"`
+}
+
+type ResponseError struct {
+	Error string `json:"error"`
 }
