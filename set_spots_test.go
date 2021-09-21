@@ -28,11 +28,18 @@ func theRequestHeaderIsSetTo(key, value string) error {
 	return nil
 }
 
-func theRequestBodyContainsANewBooking() error {
+func theRequestBodyContainsANewBooking(bookingStatus string) error {
+	var status string
+	if bookingStatus == "emergency" {
+		status = "EB"
+	} else {
+		status = "NB"
+	}
+
 	newSpot := Spot{
 		ID:            "0",
 		BookedDate:    time.Date(2021, 9, 4, 0, 0, 0, 0, time.Now().Location()),
-		BookingStatus: "NB",
+		BookingStatus: status,
 		BookedOn:      time.Now(),
 		BookedBy:      "123123",
 	}

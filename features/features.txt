@@ -1,0 +1,4 @@
+Scenario: an unauthorized user books an available emergency spot for an employee
+        Given a "emergency" office spot is "available"
+        When 
+        Then 
